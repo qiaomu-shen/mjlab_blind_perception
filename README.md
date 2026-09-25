@@ -1,5 +1,4 @@
-# Blind Humanoid Stair Climbing via Proprioceptive Interaction Memory
-# 基于本体交互记忆的人形机器人盲爬楼梯
+# Blind Humanoid Stair Climbing via Proprioceptive Interaction Memory / 基于本体交互记忆的人形机器人盲爬楼梯
 
 This repository contains ongoing research on **blind humanoid locomotion and stair climbing with the Unitree G1**. The current focus is to make a humanoid infer useful local stair geometry from its own physical interactions, preserve that information across footsteps, and adapt its gait **without RGB, depth images, elevation maps, or explicit stair dimensions at deployment**.
 
@@ -90,9 +89,9 @@ The structured interaction summary is fused with stair-focused proprioception an
 
 The memory update follows
 
-\[
-z_t=(1-\alpha_t)z_{t-1}+\alpha_t z_t^{\mathrm{cand}},
-\]
+$
+z_t=(1-\alpha_t)z_{t-1}+\alpha_t z_t^{\mathrm{cand}}
+$
 
 where a larger \(\alpha_t\) writes new evidence faster and a smaller \(\alpha_t\) preserves existing memory.
 

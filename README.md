@@ -143,9 +143,9 @@ Relevant files:
 
 ## Baselines and Ablations / 基线与消融
 
-The repository includes several alternative temporal/context models for controlled comparison with the proposed interaction-memory policy. The implementations are available; systematic final comparison runs are still being completed.
+The repository includes several alternative temporal/context models for controlled comparison with the proposed interaction-memory policy. The MLP, LSTM, Causal Transformer, and DreamWaQ-style baseline policies have all been deployed on the physical Unitree G1. Systematic final comparison runs are still being completed.
 
-仓库已经实现多种时序建模与上下文估计基线，用于与交互记忆方法进行受控比较。目前这些模型的代码与训练配置已经完成，系统性的最终对比实验仍在继续。
+仓库已经实现多种时序建模与上下文估计基线，用于与交互记忆方法进行受控比较。其中 MLP、LSTM、Causal Transformer 和 DreamWaQ 风格基线策略均已在 Unitree G1 真机部署；系统性的最终对比实验仍在进行中。
 
 | Model / 模型 | Role / 作用 | Implementation |
 | --- | --- | --- |
@@ -201,9 +201,9 @@ The repository includes a G1 deployment stack under <code>deploy_lstm/</code>:
 
 仓库在 <code>deploy_lstm/</code> 中包含 G1 部署链路，包括 ONNX 推理、C++ runtime、Unitree G1 FSM、29 自由度关节位置控制，以及 LSTM / slow-latent 状态管理。
 
-The deployment infrastructure is implemented; real-robot validation of the current interaction-memory policy is ongoing.
+The MLP, LSTM, Causal Transformer, and DreamWaQ-style baseline locomotion policies have been deployed on the physical Unitree G1. Real-robot validation of the latest interaction-memory policy is still ongoing.
 
-当前部署框架已经完成，最新交互记忆策略的实机验证仍在继续。
+MLP、LSTM、Causal Transformer 和 DreamWaQ 风格基线运动策略均已在 Unitree G1 真机部署；最新交互记忆策略的实机验证仍在进行中。
 
 ---
 
@@ -219,6 +219,7 @@ The deployment infrastructure is implemented; real-robot validation of the curre
 - MLP, LSTM, Causal Transformer, and DWAQ-style comparison implementations
 - fixed evaluation pipelines and latent-analysis tools
 - Unitree G1 ONNX/C++ deployment infrastructure
+- physical Unitree G1 deployment of MLP, LSTM, Causal Transformer, and DreamWaQ-style baseline policies
 
 **Ongoing / 进行中**
 
@@ -226,7 +227,7 @@ The deployment infrastructure is implemented; real-robot validation of the curre
 - robust probing and recovery behavior
 - systematic baseline and ablation evaluation
 - final quantitative paper experiments
-- real-robot validation
+- real-robot validation of the latest interaction-memory policy
 
 ---
 

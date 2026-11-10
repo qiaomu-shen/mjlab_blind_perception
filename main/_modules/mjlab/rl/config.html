@@ -56,7 +56,7 @@
     <link rel="search" title="Search" href="../../../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
-    <meta name="docbuild:last-update" content="Jun 27, 2026"/>
+    <meta name="docbuild:last-update" content="Nov 10, 2026"/>
   </head>
   
   
@@ -493,7 +493,7 @@ document.write(`
 <span class="w">  </span><span class="sd">&quot;&quot;&quot;Hold update rate for continuously refreshed geometry/stride memory.&quot;&quot;&quot;</span>
   <span class="n">write_steps</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">6</span>
 <span class="w">  </span><span class="sd">&quot;&quot;&quot;Number of steps to stay in STAIR_WRITE mode.&quot;&quot;&quot;</span>
-  <span class="n">stair_confirm_steps</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2</span>
+  <span class="n">stair_confirm_steps</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">3</span>
 <span class="w">  </span><span class="sd">&quot;&quot;&quot;Minimum WRITE frames with stair evidence required to enter STAIR_MEMORY.&quot;&quot;&quot;</span>
   <span class="n">min_stair_steps</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">30</span>
 <span class="w">  </span><span class="sd">&quot;&quot;&quot;Minimum steps in STAIR_MEMORY before exit is allowed.&quot;&quot;&quot;</span>
@@ -509,7 +509,7 @@ document.write(`
 <span class="w">  </span><span class="sd">&quot;&quot;&quot;p_event threshold required to re-arm triggering after a gate transition.&quot;&quot;&quot;</span>
   <span class="n">stair_on_threshold</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.35</span>
 <span class="w">  </span><span class="sd">&quot;&quot;&quot;p_stair threshold counted as confirming evidence during STAIR_WRITE.&quot;&quot;&quot;</span>
-  <span class="n">stair_off_threshold</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.10</span>
+  <span class="n">stair_off_threshold</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.20</span>
 <span class="w">  </span><span class="sd">&quot;&quot;&quot;p_stair threshold counted as exit evidence during STAIR_MEMORY.&quot;&quot;&quot;</span>
 
   <span class="c1"># ---- Auxiliary loss ----</span>
@@ -527,18 +527,18 @@ document.write(`
 <span class="w">  </span><span class="sd">&quot;&quot;&quot;Weight for stair state BCE loss.&quot;&quot;&quot;</span>
   <span class="n">aux_stair_pos_weight</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">3.0</span>
 <span class="w">  </span><span class="sd">&quot;&quot;&quot;Positive-class weight for stair-state BCE loss.&quot;&quot;&quot;</span>
-  <span class="n">aux_stair_shape_coef</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.03</span>
+  <span class="n">aux_stair_shape_coef</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span>
 <span class="w">  </span><span class="sd">&quot;&quot;&quot;Weight for masked tread-depth/riser-height Huber loss.&quot;&quot;&quot;</span>
   <span class="n">aux_safe_stride_coef</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.03</span>
-<span class="w">  </span><span class="sd">&quot;&quot;&quot;Weight for masked safe-tread lower-bound Huber loss.&quot;&quot;&quot;</span>
+<span class="w">  </span><span class="sd">&quot;&quot;&quot;Weight for the Event-to-layer2 minimum-safe-stride Huber loss.&quot;&quot;&quot;</span>
   <span class="n">stair_shape_huber_delta</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.05</span>
-<span class="w">  </span><span class="sd">&quot;&quot;&quot;Huber transition point for stair geometry labels, in meters.&quot;&quot;&quot;</span>
+<span class="w">  </span><span class="sd">&quot;&quot;&quot;Huber transition point for stair geometry labels normalized to [0, 1].&quot;&quot;&quot;</span>
   <span class="n">safe_stride_huber_delta</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.05</span>
 <span class="w">  </span><span class="sd">&quot;&quot;&quot;Huber transition point for safe-stride labels, in meters.&quot;&quot;&quot;</span>
-  <span class="n">safe_stride_min</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.08</span>
-<span class="w">  </span><span class="sd">&quot;&quot;&quot;Minimum decoded safe-stride lower bound, in meters.&quot;&quot;&quot;</span>
-  <span class="n">safe_stride_max</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.45</span>
-<span class="w">  </span><span class="sd">&quot;&quot;&quot;Maximum decoded safe-stride lower bound, in meters.&quot;&quot;&quot;</span>
+  <span class="n">safe_stride_min</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.10</span>
+<span class="w">  </span><span class="sd">&quot;&quot;&quot;Minimum decoded safe stride, in meters.&quot;&quot;&quot;</span>
+  <span class="n">safe_stride_max</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.55</span>
+<span class="w">  </span><span class="sd">&quot;&quot;&quot;Maximum decoded safe stride, in meters.&quot;&quot;&quot;</span>
   <span class="n">future_risk_weight_scale</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">2.0</span>
 <span class="w">  </span><span class="sd">&quot;&quot;&quot;Extra Huber weight applied in proportion to the risk label.&quot;&quot;&quot;</span>
   <span class="n">future_quality_weight_scale</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">2.0</span>
@@ -805,7 +805,7 @@ By The mjlab Developers
   
   <div class="footer-item">
     <p class="last-updated">
-  Last updated on Jun 27, 2026.
+  Last updated on Nov 10, 2026.
   <br/>
 </p>
   </div>

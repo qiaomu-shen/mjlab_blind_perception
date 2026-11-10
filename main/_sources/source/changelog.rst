@@ -59,19 +59,70 @@ Added
 Changed
 ^^^^^^^
 
+- Slow-latent moving training commands now span 0.4--1.0 m/s, with the upper
+  bound expanding from 0.8 to 1.0 m/s at the existing curriculum transition.
+  Standing environments remain at zero speed. Play evaluation now samples
+  0.6--0.9 m/s instead of 0.3--0.9 m/s.
+- Added a 5 cm per-leg shank-front clearance penalty with weight ``-2.0`` for
+  slow-latent stairs.
+  It compares a collision-surface-aligned shank segment with the next
+  sequence-local tread edge and requires matching layer, ascent direction,
+  and lateral coverage before applying the penalty.
+- Slow-latent SafeStride supervision now alternates its training-only target
+  foot after every completed swing attempt, regardless of landing quality.
+  The reached layer advances only when that attempt contacts the expected
+  tread, so partial tread contact advances while riser hits and misses keep
+  the same expected layer for the opposite foot. Every valid privileged
+  geometry target uses symmetric Huber regression; probe exactness remains
+  diagnostic evidence rather than changing the loss objective. Higher-layer
+  skips are penalized and no longer receive the safe-landing reward. Shape
+  loss remains disabled, SafeStride decodes over 0.10--0.55 m, and attempt,
+  exactness, skip, and clamp diagnostics are reported. Targets beyond the
+  0.80 m single-step tracking limit are excluded from supervision and reset
+  stale stair sequences instead of being clamped into the training set.
+  Per-leg shank clearance layer tracking now accepts any positive tread
+  overlap, while the 60% support threshold remains limited to landing quality.
+- Slow-latent SafeStride now supervises the opposite-foot recovery stride to
+  layer 1 immediately after a stair-entry collision. Deployable abrupt or
+  persistent blocking at a soft expected-riser contact no longer requires the
+  collision-penalty force threshold to count as training evidence. Entry-riser
+  and expected-riser evidence receive 3x loss importance, while rear-partial
+  tread contacts receive 2x importance, each for five frames before returning
+  to ordinary sequence supervision.
+- Slow-latent stair depth predictions now cover 0.18--0.35 m. Every curriculum
+  level contains eight total fixed tread-depth variants spanning 0.20--0.32 m,
+  split between high-stair and inverted-high-stair terrain by their configured
+  spawning proportions.
+- ShapeHead now computes its masked Huber loss after independently normalizing
+  tread depth and riser height by their configured physical ranges. Physical
+  MAE diagnostics and decoded policy outputs remain in meters.
+- ShapeHead geometry labels are now latched from the accepted stair sequence at
+  entry and supervise the complete active sequence instead of starting only
+  after a safe layer-2 touchdown. Training logs now report valid stair
+  coverage and whether predictions track the variation in true stair sizes.
 - Slow-latent stair entry now uses explicit training-only sequence and
   entry-relative layer metadata, so regular and inverted stairs agree on the
-  first riser. A first-riser hit starts the privileged stair label without
-  heading or command filtering, and the label remains active until geometric
-  flat exit confirmation.
+  first riser. Event supervision now detects deployable swing-motion blocking:
+  an abrupt loss of forward foot progress triggers immediately, while a
+  low-speed vertical contact triggers after three persistent frames. Contact
+  force remains a collision-severity diagnostic and penalty input but is no
+  longer an Event gate. Repeated layer-1 blocking can provide new Event
+  evidence when the first trigger was missed. The privileged stair label
+  remains active until geometric flat exit confirmation.
 - Slow-latent WRITE now requires consecutive StairHead evidence and performs
   every configured fast-write update before entering MEMORY. StairHead uses
   the same proprioceptive LSTM output for training and gating, while MEMORY
   freezes state channels and continues refreshing shape channels. Deployment
   observations are unchanged, and no new reward term was added.
+- Slow-latent stair gating now requires three consecutive confirmation frames
+  and treats StairHead probabilities below 0.20 as MEMORY exit evidence. New
+  diagnostics track repeated layer-1 hits after entry without changing reward.
+- Slow-latent MEMORY exit now releases held state and shape channels over the
+  existing 15-step cooldown instead of immediately switching to the normal
+  latent update rate.
 - Slow-latent stair geometry and safe-stride heads now decode to physical ranges
   in meters and are exported as explicit ONNX outputs without changing the actor
-  control input. Stair depth is fixed to 0.25--0.35 m and riser height is bounded
+  control input. Stair depth is fixed to 0.18--0.35 m and riser height is bounded
   to 0.088--0.25 m. Label range violations are logged without clamping targets.
 - Replaced the slow-latent future-entry proxy with independent continuous
   collision-risk and next-touchdown-quality heads. Stage-2 landing shaping now
@@ -166,6 +217,10 @@ Changed
 Fixed
 ^^^^^
 
+- Fixed fresh installations by replacing the removed MuJoCo 3.8.1 nightly
+  wheel with the stable ``mujoco==3.8.1`` release from PyPI.
+- Upgraded ONNXScript to fix GRU and LSTM exports with the default
+  PyTorch 2.9 ``torch.export``-based ONNX exporter.
 - Fixed ONNX export path resolution in the velocity, manipulation, and
   tracking runners when a parent directory name contains the word
   ``"model"`` (:issue:`867`). Contribution by @gokulp01.

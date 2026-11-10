@@ -274,10 +274,37 @@ Branch-specific model implementations include the Causal Transformer in <code>ls
 
 An NVIDIA GPU is recommended. The project uses <code>uv</code> for environment management.
 
+### Verified environment baseline / 已验证环境基线
+
+The following stack is the reproducible research baseline for the active
+development branches. The exact resolved artifacts are recorded in
+<code>uv.lock</code> and anchored by the
+<code>env-mujoco-3.8.1-stable</code> Git tag.
+
+以下版本是当前主开发分支的可复现研究环境。精确解析结果记录在
+<code>uv.lock</code> 中，并由
+<code>env-mujoco-3.8.1-stable</code> Git tag 固定。
+
+| Component | Verified version |
+| --- | --- |
+| Python | 3.13.x |
+| PyTorch | 2.9.0+cu128 |
+| MuJoCo | 3.8.1 stable |
+| MuJoCo-Warp | 3.8.0.2, commit <code>88b55fc2696960b927bc12584994bb8412b36558</code> |
+| Warp | 1.12.x |
+| MjLab | 1.3.0 |
+| RSL-RL | 5.2.0 |
+| ONNXScript | 0.7.2 locked, constraint <code>>=0.7.2</code> |
+
+This baseline applies to <code>main</code>, the active <code>agent/</code> and
+<code>exp/</code> research branches, and <code>perception-training</code>.
+<code>lstm_teacher_policy</code> intentionally remains on its historical
+MuJoCo 3.6 / MjLab 1.2 environment.
+
 ~~~bash
 git clone https://github.com/qiaomu-shen/mjlab_blind_perception.git
 cd mjlab_blind_perception
-uv sync --extra cu128
+uv sync --extra cu128 --locked
 ~~~
 
 Basic commands:

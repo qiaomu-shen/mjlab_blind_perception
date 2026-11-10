@@ -59,6 +59,8 @@ Added
 Changed
 ^^^^^^^
 
+- Documented the verified MuJoCo 3.8.1 research environment baseline and
+  reproducible ``uv sync --locked`` setup in the README.
 - Slow-latent moving training commands now span 0.4--1.0 m/s, with the upper
   bound expanding from 0.8 to 1.0 m/s at the existing curriculum transition.
   Standing environments remain at zero speed. Play evaluation now samples

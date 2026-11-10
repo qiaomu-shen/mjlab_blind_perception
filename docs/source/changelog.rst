@@ -228,6 +228,10 @@ Changed
 Fixed
 ^^^^^
 
+- Fixed fresh installations by replacing the removed MuJoCo 3.8.1 nightly
+  wheel with the stable ``mujoco==3.8.1`` release from PyPI.
+- Upgraded ONNXScript to fix GRU and LSTM exports with the default
+  PyTorch 2.9 ``torch.export``-based ONNX exporter.
 - Fixed ONNX export path resolution in the velocity, manipulation, and
   tracking runners when a parent directory name contains the word
   ``"model"`` (:issue:`867`). Contribution by @gokulp01.
